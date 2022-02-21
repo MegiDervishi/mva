@@ -39,7 +39,7 @@ scaler = preprocessing.StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_train, X_test, y_train, y_test = train_test_split(X_train, y_train, test_size = 0.1, shuffle = True)
 
-def execute_prediction(classifier, classifier_name, compute_loss = True):
+def run_classifier(classifier, classifier_name, compute_loss = True):
     print(f'Fitting classifier {classifier_name}.')
     classifier.fit(X_train, y_train)
     print(f'Computing predictions of {classifier_name}.')
@@ -63,7 +63,7 @@ def execute_prediction(classifier, classifier_name, compute_loss = True):
     print(f"Testing Accuracy for {classifier_name}: {acc_test}")
     return nll, acc, nll_test, acc_test
 
-def execute_prediction_MLP(model):
+def run_MLP(model):
     y_logits = np.exp(model(torch.from_numpy(X_train).float().to(device)).cpu().detach().numpy())
     y_pred = np.argmax(y_logits, axis = 1)
     y_logits = np.clip(y_logits[:, 1], 1e-6, 1 - 1e-6)
@@ -89,13 +89,13 @@ model.load_state_dict(torch.load(f'.\\save\\models\\epoch{best_epoch}.pt'))
 model.eval()
 
 res = {}
-#res["MLP"] = execute_prediction_MLP(model)
-#res["Random Forest"] = execute_prediction(RandomForestClassifier(n_estimators=100, n_jobs = -1), "Random Forest")
-#res["Logistic Regression"] = execute_prediction(LogisticRegression(n_jobs = -1), "Logistic Regression")
-#res["NN"] = execute_prediction(MLPClassifier(solver='adam', alpha=1e-3, hidden_layer_sizes=(64, 32), random_state=1), "NN MLP with Adam")
-#res["KNN"] = execute_prediction(KNeighborsClassifier(3, n_jobs = -1), "KNN k=3")
-res["SVM"] = execute_prediction(svm.LinearSVC(verbose=3), "SVM", compute_loss = False)
-res["Gaussian"] = execute_prediction(GaussianNB(verbose=3), "Naive Bayes")
-res["AdaBoost"] = execute_prediction(AdaBoostClassifier(base_estimator=DecisionTreeClassifier(), n_estimators=300, algorithm='SAMME.R', verbose=3), "AdaBoost")
+#res["MLP"] = run_MLP(model)
+#res["Random Forest"] = run_classifier(RandomForestClassifier(n_estimators=100, n_jobs = -1), "Random Forest")
+#res["Logistic Regression"] = run_classifier(LogisticRegression(n_jobs = -1), "Logistic Regression")
+#res["NN"] = run_classifier(MLPClassifier(solver='adam', alpha=1e-3, hidden_layer_sizes=(64, 32), random_state=1), "NN MLP with Adam")
+#res["KNN"] = run_classifier(KNeighborsClassifier(3, n_jobs = -1), "KNN k=3")
+#res["SVM"] = run_classifier(svm.LinearSVC(verbose=3), "SVM", compute_loss = False)
+#res["Gaussian"] = run_classifier(GaussianNB(verbose=3), "Naive Bayes")
+#res["AdaBoost"] = run_classifier(AdaBoostClassifier(base_estimator=DecisionTreeClassifier(), n_estimators=300, algorithm='SAMME.R', verbose=3), "AdaBoost")
 
 ipdb.set_trace()

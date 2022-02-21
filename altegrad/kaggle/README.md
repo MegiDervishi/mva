@@ -16,6 +16,8 @@ The file 'RandomForestClassifier.py' runs the Random Forest classifier on as man
 
 The file 'MLPModel.py' details the network architecture of the Multi-Layer Perceptron as is described in the final report. In order to find the correct set of hyper-parameters one can first run the file 'train.py' in order to explore the hyper-parameter space as specified in the main function of that file. The best hyper-parameters will be displayed at the end and can be copied in the 'MLPClassifier.py' file in order to train for longer epochs and save the predicted probablities of the edges in 'test.txt' in the file 'submission.csv'.
 
+To train/test run: `python MLPClassifier.py`
+
 #### GCN
 
 The implementation of the graph convolutional network using the StellarGraph library is available as both a Jupyter file ('GCN.ipynb') and a python file ('GCN.py'). 
